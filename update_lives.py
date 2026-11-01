@@ -66,8 +66,9 @@ def search_live(key: str, channel_id: str) -> str | None:
 def main() -> int:
     key = os.environ.get("YOUTUBE_API_KEY")
     if not key:
-        print("YOUTUBE_API_KEY is not set", file=sys.stderr)
-        return 1
+        # Not configured yet: skip quietly so the schedule doesn't send a failure email every 30 minutes.
+        print("::warning::YOUTUBE_API_KEY secret is not set; lives.json left as is")
+        return 0
 
     channels = json.load(open("channels.json", encoding="utf-8"))
     try:
